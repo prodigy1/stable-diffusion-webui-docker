@@ -1,8 +1,6 @@
 version: '3.9'
 
 x-base_service: &base_service
-    ports:
-      - "7860:7860"
     volumes:
       - &v1 ${WEBUI_DATA_PATH:-./data}:/data
       - &v2 ${WEBUI_OUTPUT_PATH:-./output}:/output
@@ -27,6 +25,8 @@ services:
   auto: &automatic
     <<: *base_service
     profiles: ["auto"]
+    ports:
+      - "${WEBUI_AUTOMATIC_PORT:-7860}:7860"
     restart: unless-stopped
     build: ./services/AUTOMATIC1111
     image: sd-auto:49
@@ -36,6 +36,8 @@ services:
   auto-cpu:
     <<: *automatic
     profiles: ["auto-cpu"]
+    ports:
+      - "${WEBUI_AUTOMATIC_PORT:-7860}:7860"
     restart: unless-stopped
     deploy: {}
     environment:
@@ -44,6 +46,8 @@ services:
   invoke:
     <<: *base_service
     profiles: ["invoke"]
+    ports:
+      - "${WEBUI_INVOKE_PORT:-7860}:7860"
     restart: unless-stopped
     build: ./services/invoke/
     image: sd-invoke:26
@@ -55,6 +59,8 @@ services:
   sygil: &sygil
     <<: *base_service
     profiles: ["sygil"]
+    ports:
+      - "${WEBUI_SYGIL_PORT:-7860}:7860"
     restart: unless-stopped
     build: ./services/sygil/
     image: sd-sygil:16
@@ -65,6 +71,8 @@ services:
   sygil-sl:
     <<: *sygil
     profiles: ["sygil-sl"]
+    ports:
+      - "${WEBUI_SYGIL_PORT:-7860}:7860"
     restart: unless-stopped
     environment:
       - USE_STREAMLIT=1
