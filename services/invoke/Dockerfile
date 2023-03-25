@@ -41,18 +41,12 @@ ln -sf opencv4.pc opencv.pc
 EOF
 
 
-ARG BRANCH=main SHA="__UNDEFINED__"
+ARG BRANCH=main SHA=6e0c6d9cc9f6bdbdefc4b9e94bc1ccde1b04aa42
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 git fetch
 git reset --hard
 git checkout ${BRANCH}
-if [[ "${SHA}" == "__UNDEFINED__" ]]
-then
-git reset --hard
-git pull
-else
 git reset --hard ${SHA}
-fi
 pip install .
 EOF
 

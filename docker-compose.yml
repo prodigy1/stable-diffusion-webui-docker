@@ -28,7 +28,10 @@ services:
     ports:
       - "${WEBUI_AUTOMATIC_PORT:-7860}:7860"
     restart: unless-stopped
-    build: ./services/AUTOMATIC1111
+    build:
+      context: ./services/AUTOMATIC1111
+      args:
+        - SHA=${AUTO_SHA}
     image: sd-auto:49
     environment:
       - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
@@ -36,9 +39,6 @@ services:
   auto-cpu:
     <<: *automatic
     profiles: ["auto-cpu"]
-    ports:
-      - "${WEBUI_AUTOMATIC_PORT:-7860}:7860"
-    restart: unless-stopped
     deploy: {}
     environment:
       - CLI_ARGS=--no-half --precision full --allow-code --enable-insecure-extension-access --api
@@ -47,9 +47,12 @@ services:
     <<: *base_service
     profiles: ["invoke", "auto-invoke", "all"]
     ports:
-      - "${WEBUI_INVOKE_PORT:-7860}:7860"
+      - "${WEBUI_INVOKE_PORT:-7861}:7860"
     restart: unless-stopped
-    build: ./services/invoke/
+    build:
+      context: ./services/invoke
+      args:
+        - SHA=${INVOKE_SHA}
     image: sd-invoke:26
     environment:
       - PRELOAD=true
@@ -60,9 +63,12 @@ services:
     <<: *base_service
     profiles: ["sygil"]
     ports:
-      - "${WEBUI_SYGIL_PORT:-7860}:7860"
+      - "${WEBUI_SYGIL_PORT:-7862}:7860"
     restart: unless-stopped
-    build: ./services/sygil/
+    build:
+      context: ./services/sygil
+      args:
+        - SHA=${SYGIL_SHA}
     image: sd-sygil:16
     environment:
       - CLI_ARGS=--optimized-turbo
@@ -71,8 +77,5 @@ services:
   sygil-sl:
     <<: *sygil
     profiles: ["sygil-sl", "auto-sygil", "all"]
-    ports:
-      - "${WEBUI_SYGIL_PORT:-7860}:7860"
-    restart: unless-stopped
     environment:
       - USE_STREAMLIT=1

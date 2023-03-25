@@ -19,18 +19,12 @@ pip install -r requirements.txt
 EOF
 
 
-ARG BRANCH=master SHA="__UNDEFINED__"
+ARG BRANCH=master SHA=571fb897edd58b714bb385dfaa1ad59aecef8bc7
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 cd stable-diffusion
 git fetch
 git checkout ${BRANCH}
-if [[ "${SHA}" == "__UNDEFINED__" ]]
-then
-git reset --hard
-git pull
-else
 git reset --hard ${SHA}
-fi
 sed -i 's/^tensorflow.*$//' requirements.txt
 pip install -r requirements.txt
 pip install https://tf.novaal.de/core2/tensorflow-2.8.0-cp38-cp38-linux_x86_64.whl

@@ -71,17 +71,11 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 RUN apt-get -y install libgoogle-perftools-dev && apt-get clean
 ENV LD_PRELOAD=libtcmalloc.so
 
-ARG SHA="__UNDEFINED__"
+ARG SHA=a9fed7c364061ae6efb37f797b6b522cb3cf7aa2
 RUN --mount=type=cache,target=/root/.cache/pip <<EOF
 cd stable-diffusion-webui
 git fetch
-if [[ "${SHA}" == "__UNDEFINED__" ]]
-then
-git reset --hard
-git pull
-else
 git reset --hard ${SHA}
-fi
 pip install -r requirements_versions.txt
 EOF
 
