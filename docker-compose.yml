@@ -24,7 +24,7 @@ services:
 
   auto: &automatic
     <<: *base_service
-    profiles: ["auto"]
+    profiles: ["auto", "auto-sygil", "all"]
     ports:
       - "${WEBUI_AUTOMATIC_PORT:-7860}:7860"
     restart: unless-stopped
@@ -45,7 +45,7 @@ services:
 
   invoke:
     <<: *base_service
-    profiles: ["invoke"]
+    profiles: ["invoke", "auto-invoke", "all"]
     ports:
       - "${WEBUI_INVOKE_PORT:-7860}:7860"
     restart: unless-stopped
@@ -70,7 +70,7 @@ services:
 
   sygil-sl:
     <<: *sygil
-    profiles: ["sygil-sl"]
+    profiles: ["sygil-sl", "auto-sygil", "all"]
     ports:
       - "${WEBUI_SYGIL_PORT:-7860}:7860"
     restart: unless-stopped
