@@ -25,7 +25,9 @@ cd stable-diffusion
 git fetch
 git checkout ${BRANCH}
 git reset --hard ${SHA}
+sed -i 's/^tensorflow.*$//' requirements.txt
 pip install -r requirements.txt
+pip install https://tf.novaal.de/core2/tensorflow-2.8.0-cp38-cp38-linux_x86_64.whl
 EOF
 
 RUN --mount=type=cache,target=/root/.cache/pip pip install -U 'transformers>=4.24'
